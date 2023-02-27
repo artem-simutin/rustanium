@@ -2,7 +2,17 @@
 name = "rustanium"
 version = "0.1.0"
 edition = "2021"
+authors = ["Artem Simutin <artemsimutin@gmail.com>"]
+homepage = "https://github.com/statik-coder/rustanium"
+repository = "https://github.com/statik-coder/rustanium"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+# internal libraries
+rustanium_bytes = { path = "bytes" }
+rustanium_time = { path = "time" }
+# external libraries
+hex = "0.4"
+crypto-hash = "0.3.4"
