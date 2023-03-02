@@ -3,11 +3,11 @@ use crate::{
     miner,
     traits::hashable::Hashable,
 };
-use rustanium_bytes::{u128_bytes, u32_bytes, u64_bytes};
+use rustanium_bytes::{u128_bytes, u64_bytes};
 use rustanium_time::now;
 use std::fmt::{Debug, Formatter, Result as FormatResult};
 
-pub type BlockIndex = u32;
+pub type BlockIndex = u64;
 pub type BlockNonce = u64;
 pub type BlockTimestamp = u128;
 pub type BlockPayload = String;
@@ -32,7 +32,7 @@ impl Block {
             nonce: 0,
             timestamp: now(),
             payload: String::from("Genesis block"),
-            difficulty: 0x00ffffffffffffffffffffffffffffff,
+            difficulty: 0x0000ffffffffffffffffffffffffffff,
         }
     }
 
@@ -64,7 +64,6 @@ impl Block {
         for current_nonce in 0..(u64::MAX) {
             self.set_nonce(current_nonce);
             let hash = self.hash();
-            println!("Trying... {}", &format_block_hash(&hash));
             if miner::Miner::check_difficulty(&hash, self.difficulty) {
                 println!("");
                 self.hash = hash;
@@ -77,7 +76,7 @@ impl Block {
 impl Hashable for Block {
     fn bytes(&self) -> Vec<u8> {
         let mut bytes = vec![];
-        bytes.extend(&u32_bytes(&self.index));
+        bytes.extend(&u64_bytes(&self.index));
         bytes.extend(&u64_bytes(&self.nonce));
         bytes.extend(&u128_bytes(&self.timestamp));
         bytes.extend(&self.prev_block_hash);
